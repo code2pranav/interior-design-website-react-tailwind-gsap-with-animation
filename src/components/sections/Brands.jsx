@@ -18,16 +18,18 @@ const Brands = () => {
     useGsapScrollAnim(brandsRef, () => {
         const brandDivs = brandsRef.current?.querySelectorAll("div.bg-white");
         if (brandDivs?.length) {
-            gsap.from(brandDivs, {
-                y: 40,
-                opacity: 0,
+            gsap.set(brandDivs, { opacity: 0, y: 40 }); // 👈 explicit initial state
+
+            gsap.to(brandDivs, {             // 👈 use gsap.to, not gsap.from
+                y: 0,
+                opacity: 1,
                 duration: 0.7,
                 stagger: 0.12,
                 ease: "power3.out",
                 scrollTrigger: {
                     trigger: brandsRef.current,
                     start: "top 90%",
-                    toggleActions: "play none none none",
+                    toggleActions: "play none none reverse", // 👈 reverse on scroll up
                 },
             });
         }
@@ -41,7 +43,7 @@ const Brands = () => {
             {[client1, client2, client3, client4, client5, client6].map((client, index) => (
                 <div
                     key={index}
-                    className="bg-white h-20 shadow hover:shadow-xl transition-all duration-300 rounded-sm w-full opacity-20 hover:opacity-100 flex items-center justify-center will-change-transform"
+                    className="bg-white h-20 shadow hover:shadow-xl transition-all duration-300 rounded-sm w-full hover:opacity-100 flex items-center justify-center will-change-transform"
                 >
                     <img
                         src={client}
